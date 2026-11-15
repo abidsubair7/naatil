@@ -790,6 +790,20 @@
 .legal-footer-links a{color:inherit;text-decoration:none;font-size:.9rem;opacity:.82}
 .legal-footer-links a:hover{text-decoration:underline;opacity:1}
 </style>
+
+<style id="places-pagination-button-style">
+  .places-pagination{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;margin:38px auto 12px;text-align:center}
+  #seeMorePlacesBtn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:0 27px;border:1px solid rgba(29,73,59,.12);border-radius:999px;background:linear-gradient(135deg,#1d493b 0%,#2f6a52 100%);color:#fff;font:800 13px/1 'DM Sans',sans-serif;letter-spacing:.01em;box-shadow:0 9px 22px rgba(29,73,59,.18);cursor:pointer;transition:transform .22s ease,box-shadow .22s ease,background .22s ease}
+  #seeMorePlacesBtn::after{content:'↓';display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:rgba(255,255,255,.16);font-size:16px;transition:transform .22s ease,background .22s ease}
+  #seeMorePlacesBtn:hover{transform:translateY(-3px);box-shadow:0 13px 26px rgba(29,73,59,.25);background:linear-gradient(135deg,#2f6a52 0%,#1d493b 100%)}
+  #seeMorePlacesBtn:hover::after{transform:translateY(2px);background:rgba(255,255,255,.25)}
+  #seeMorePlacesBtn:active{transform:translateY(-1px)}
+  #seeMorePlacesBtn:focus-visible{outline:3px solid #e57b4c;outline-offset:4px}
+  #seeMorePlacesBtn[hidden]{display:none}
+  #placesPaginationInfo{margin:0;color:#718078;font-size:12px;font-weight:600}
+  @media(prefers-reduced-motion:reduce){#seeMorePlacesBtn,#seeMorePlacesBtn::after{transition:none}}
+  @media(max-width:600px){.places-pagination{margin-top:28px}#seeMorePlacesBtn{min-height:49px;padding:0 23px;font-size:12px}}
+</style>
 </head>
 <body>
 
@@ -807,7 +821,7 @@
     <div class="container nav">
       <a class="brand" href="#" aria-label="Naatilevide home"><span class="brand-mark">n.</span><span class="brand-name">naatilevide<span>?</span></span></a>
       <nav class="navlinks" id="navLinks">
-        <a href="#explore">Explore</a><a href="#map">Map</a><a href="#districts">Districts</a><a href="#planner">Plan trip</a><a href="#savedPlaces">Saved</a><a href="#about">About</a>
+        <a href="#explore">Explore</a><a href="#map">Map</a><a href="#districts">Districts</a><a href="#savedPlaces">Saved</a><a href="#about">About</a>
       </nav>
       <a class="nav-cta" href="#explore">Find a place ↗</a>
       <button class="menu-btn" id="menuBtn" aria-label="Open navigation">☰</button>
@@ -853,7 +867,8 @@
           <button class="filter-btn" data-category="Heritage">Heritage</button>
           <select class="district-select" id="districtFilter" aria-label="Filter by district"><option value="All">All districts</option></select>
         </div>
-        <div class="tool-nav"><button type="button" id="listViewBtn">List view</button><button type="button" id="cardViewBtn">Card view</button><a href="#map">Open map ↓</a><a href="#comparePlaces">Compare places ↓</a></div><div class="places-grid" id="placesGrid"></div>
+        <div class="tool-nav"><button type="button" id="listViewBtn">List view</button><button type="button" id="cardViewBtn">Card view</button><a href="#map">Open map ↓</a></div><div class="places-grid" id="placesGrid"></div>
+        <div class="places-pagination"><button type="button" id="seeMorePlacesBtn">See More Places</button><p id="placesPaginationInfo" aria-live="polite"></p></div>
         <div class="ad-slot" aria-label="Advertisement space">Advertisement space · AdSense placement</div>
       </div>
     </section>
@@ -878,17 +893,9 @@
       </div>
     </section>
 
-    <section class="section extra-tools" id="planner">
-      <div class="container">
-        <div class="section-head"><div><div class="section-kicker">04 / Make it a journey</div><h2>Plan your Kerala trip.</h2></div><p class="section-desc">Build a simple itinerary from the destinations currently in this directory.</p></div>
-        <div class="tool-grid">
-          <article class="tool-card"><h3>Trip planner</h3><p>Select places to add them to your local itinerary.</p><div id="tripChoices" class="tool-options"></div><div id="tripSummary" class="tool-result">No places added yet.</div><button class="tool-btn" id="printTrip">Print travel guide</button></article>
-          <article class="tool-card"><h3>Trip budget calculator</h3><p>Estimate your own costs. These are your inputs, not live destination prices.</p><label>Travel distance (km, round trip)<input id="budgetDistance" type="number" min="0" value="100"></label><label>Vehicle mileage (km/litre)<input id="budgetMileage" type="number" min="1" value="40"></label><label>Fuel price (₹/litre)<input id="budgetFuel" type="number" min="0" value="105"></label><label>Food + stay + other costs (₹)<input id="budgetOther" type="number" min="0" value="1000"></label><label>Number of travelers<input id="budgetPeople" type="number" min="1" value="2"></label><div class="tool-result" id="budgetResult" aria-live="polite"></div></article>
-        </div>
-      </div>
-    </section>
+    
     <section class="section extra-tools" id="savedPlaces"><div class="container"><div class="section-head"><div><div class="section-kicker">05 / Your shortlist</div><h2>Saved & recently viewed.</h2></div><p class="section-desc">Your lists are stored only in this browser.</p></div><div class="tool-grid"><article class="tool-card"><h3>Favorites</h3><div id="savedList" class="tool-result">No saved places yet.</div></article><article class="tool-card"><h3>Recently viewed</h3><div id="recentList" class="tool-result">No recently viewed places yet.</div></article></div></div></section>
-    <section class="section extra-tools" id="comparePlaces"><div class="container"><div class="section-head"><div><div class="section-kicker">06 / Choose wisely</div><h2>Compare destinations.</h2></div><p class="section-desc">Compare up to three places from the current directory.</p></div><div class="tool-card"><div id="compareChoices" class="tool-options"></div><div id="compareResult" class="tool-result">Choose places to compare.</div></div></div></section>
+    
     <section class="section extra-tools" id="hiddenKerala"><div class="container"><div class="section-head"><div><div class="section-kicker">07 / Beyond the usual</div><h2>Hidden Kerala collection.</h2></div><p class="section-desc">A discovery shelf. Places shown here are drawn from the current directory; they are not all verified hidden gems.</p></div><div class="places-grid" id="hiddenGrid"></div></div></section>
     <section class="section extra-tools" id="contribute"><div class="container"><div class="section-head"><div><div class="section-kicker">08 / Help improve the directory</div><h2>Suggest or correct a place.</h2></div><p class="section-desc">Your email app will open with a pre-filled message addressed to naatilevide.in@gmail.com. Review it and press Send; submissions are not sent automatically.</p></div><div class="tool-grid"><article class="tool-card"><h3>Suggest a place</h3><label>Place name<input id="suggestName" placeholder="Enter place name"></label><label>District<input id="suggestDistrict" placeholder="District"></label><label>Details<textarea id="suggestDetails" rows="3" placeholder="Locality, category, coordinates or source"></textarea></label><button class="tool-btn" id="suggestSend">Prepare suggestion email</button></article><article class="tool-card"><h3>Report incorrect information</h3><label>Place<input id="reportPlace" placeholder="Place name"></label><label>What is incorrect?<textarea id="reportDetails" rows="3" placeholder="Describe the correction and source"></textarea></label><button class="tool-btn" id="reportSend">Prepare correction email</button></article></div></div></section>
 
@@ -907,15 +914,9 @@
 <div class="nearby-category-links"><a class="tool-btn" data-nearby-search="restaurants" target="_blank" rel="noopener">Nearby restaurants ↗</a><a class="tool-btn" data-nearby-search="hospitals" target="_blank" rel="noopener">Nearby hospitals ↗</a><a class="tool-btn" data-nearby-search="hotels" target="_blank" rel="noopener">Nearby hotels ↗</a><a class="tool-btn" data-nearby-search="ATMs" target="_blank" rel="noopener">Nearby ATMs ↗</a></div>
 <small>Directory results only include places currently in this website's dataset. Other searches open Google Maps.</small></div></div></section>
 
-    <section class="section extra-tools" id="routeExplorer"><div class="container"><div class="section-head"><div><div class="section-kicker">09 / Explore more, travel smarter</div><h2>Smart route explorer.</h2></div><p class="section-desc">Choose places from the directory to build a multi-stop route. Google Maps will calculate the actual route and travel time.</p></div><div class="tool-card"><div id="routeChoices" class="tool-options"></div><p class="tool-result" id="routeSummary">Select at least two destinations to create a route.</p><a class="tool-btn" id="openRoute" target="_blank" rel="noopener" href="https://www.google.com/maps">Open route in Google Maps ↗</a></div></div></section>
+    
 
-<section class="section extra-tools" id="shareCollections"><div class="container">
-<div class="section-head"><div><div class="section-kicker">12 / Save and share your journey</div><h2>Shareable travel collections.</h2></div><p class="section-desc">Create a named collection from your route selections and share it with a link.</p></div>
-<div class="tool-card"><label>Collection name <input id="collectionName" type="text" maxlength="60" placeholder="e.g. Idukki weekend trip"></label>
-<p class="tool-result" id="collectionPreview">Select destinations in the route explorer, then create your collection.</p>
-<div class="collection-actions"><button class="tool-btn" id="createCollection" type="button">Create shareable link ↗</button><button class="tool-btn" id="copyCollectionLink" type="button" disabled>Copy link</button></div>
-<div id="collectionLinkStatus" class="tool-result" aria-live="polite"></div><h3>Your saved collections</h3><div id="savedCollections" class="saved-collections">No collections saved on this device yet.</div>
-<small>Collections are stored in this browser. Shared links contain destination IDs and the collection name.</small></div></div></section>
+
 
     <section class="section extra-tools" id="seasonGuide"><div class="container"><div class="section-head"><div><div class="section-kicker">10 / Plan your visit</div><h2>Best time & weather guide.</h2></div><p class="section-desc">Seasonal guidance is general only. Check live forecasts and local advisories before travelling.</p></div><div class="tool-grid"><article class="tool-card"><h3>Check a destination</h3><label>Destination<select id="seasonPlace"></select></label><p id="seasonNote" class="tool-result">Choose a place to view seasonal notes.</p><a id="weatherSearch" class="tool-btn" target="_blank" rel="noopener" href="https://www.google.com/search?q=Kerala+weather">Check current weather ↗</a></article><article class="tool-card"><h3>Travel season basics</h3><p><strong>October–February:</strong> Often more comfortable for many outdoor trips.</p><p><strong>March–May:</strong> Hotter conditions in many areas; high ranges may feel cooler.</p><p><strong>June–September:</strong> Southwest monsoon; waterfalls and greenery increase, but heavy rain, landslides and access closures are possible.</p><small>These are broad regional patterns, not guarantees for a specific place.</small></article></div></div></section>
     <section class="section extra-tools" id="localFood"><div class="container"><div class="section-head"><div><div class="section-kicker">11 / Taste the region</div><h2>Local food discovery.</h2></div><p class="section-desc">Find regional dishes and nearby food spots. Results open an external map search; listings are not verified by Naatilevide.</p></div><div class="tool-card"><label>Choose a district<select id="foodDistrict"></select></label><div class="tool-options" id="foodTags"></div><a class="tool-btn" id="foodSearch" target="_blank" rel="noopener" href="https://www.google.com/maps">Find local food ↗</a></div></div></section>
@@ -932,7 +933,7 @@
 </main>
 
   <footer><div class="container">
-    <div class="footer-top"><div><a class="brand" href="#"><span class="brand-mark">n.</span><span class="brand-name">naatilevide<span>?</span></span></a><p class="footer-copy">Discover places across Kerala. Destination details in this starter project are sample editorial entries; verify local access, fees and conditions before travelling.</p></div><div class="footer-links"><a href="#explore">Explore places</a><a href="#map">Map</a><a href="#districts">Districts</a><a href="#routeExplorer">Route planner</a><a href="#localFood">Food</a><a href="#eventsCalendar">Events</a><a href="#about">About</a></div></div>
+    <div class="footer-top"><div><a class="brand" href="#"><span class="brand-mark">n.</span><span class="brand-name">naatilevide<span>?</span></span></a><p class="footer-copy">Discover places across Kerala. Destination details in this starter project are sample editorial entries; verify local access, fees and conditions before travelling.</p></div><div class="footer-links"><a href="#explore">Explore places</a><a href="#map">Map</a><a href="#districts">Districts</a><a href="#localFood">Food</a><a href="#eventsCalendar">Events</a><a href="#about">About</a></div></div>
     <div class="legal-footer-links" aria-label="Legal and contact links">
       <a href="privacy-policy.html">Privacy Policy</a>
       <a href="terms-and-conditions.html">Terms &amp; Conditions</a>
@@ -2064,6 +2065,9 @@
     const districts=["Alappuzha","Ernakulam","Idukki","Kannur","Kasaragod","Kollam","Kottayam","Kozhikode","Malappuram","Palakkad","Pathanamthitta","Thiruvananthapuram","Thrissur","Wayanad"];
     const grid=document.getElementById("placesGrid");
     let activeCategory="All",activeDistrict="All",searchTerm="";
+    const INITIAL_VISIBLE_PLACES=25;
+    const PLACES_PER_LOAD=25;
+    let visiblePlacesCount=INITIAL_VISIBLE_PLACES;
     let userCoordinates=null;
     let nearbyMode=false;
     const saved=new Set(JSON.parse(localStorage.getItem("naatilevide-saved")||"[]"));
@@ -2084,12 +2088,20 @@
         if(nearbyMode) filtered.sort((a,b)=>a.distance-b.distance);
       }
       document.getElementById("placeCount").textContent=places.length;
-      if(!filtered.length){grid.innerHTML='<div class="empty">No places match your search. Try another place or district.</div>';return;}
-      grid.innerHTML=filtered.map(p=>`<article class="place-card">
+      if(!filtered.length){grid.innerHTML='<div class="empty">No places match your search. Try another place or district.</div>';document.getElementById("seeMorePlacesBtn").hidden=true;document.getElementById("placesPaginationInfo").textContent="";return;}
+      const visible=filtered.slice(0,visiblePlacesCount);
+      grid.innerHTML=visible.map(p=>`<article class="place-card">
         <div class="place-image"><img src="${p.image}" alt="${escapeHTML(p.name)}" loading="lazy"><span class="place-badge">${escapeHTML(p.category)}</span><button class="save-btn ${saved.has(p.id)?"saved":""}" data-save="${p.id}" aria-label="Save ${escapeHTML(p.name)}">${saved.has(p.id)?"♥":"♡"}</button></div>
         <div class="place-info"><div class="place-location">${escapeHTML(p.district)} · Kerala</div><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description)}</p><div class="place-bottom"><span>${userCoordinates?`⌖ ${p.distance.toFixed(1)} km away`:`⌖ ${escapeHTML(p.tag)}`}</span><span><button class="details-btn" data-details="${p.id}">View details ↗</button><button class="place-share" data-share="${p.id}" aria-label="Share ${escapeHTML(p.name)}">Share</button></span></div></div>
       </article>`).join("");
+      const moreButton=document.getElementById("seeMorePlacesBtn");
+      moreButton.hidden=visible.length>=filtered.length;
+      document.getElementById("placesPaginationInfo").textContent=`Showing ${visible.length} of ${filtered.length} places`;
     }
+    document.getElementById("seeMorePlacesBtn").addEventListener("click",()=>{
+      visiblePlacesCount+=PLACES_PER_LOAD;
+      renderPlaces();
+    });
     renderPlaces();
     document.getElementById("listViewBtn").addEventListener("click",()=>grid.classList.add("list-view"));
     document.getElementById("cardViewBtn").addEventListener("click",()=>grid.classList.remove("list-view"));
@@ -2191,25 +2203,17 @@
 
     // Local-only utilities: no account or backend required.
     const readStore=(key,fallback=[])=>{try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback));}catch{return fallback;}};
-    let tripIds=readStore("naatilevide-trip",[]),recentIds=readStore("naatilevide-recent",[]);
+    let recentIds=readStore("naatilevide-recent",[]);
     const themeButton=document.createElement("button");themeButton.className="theme-toggle";themeButton.type="button";themeButton.textContent="☾ Theme";document.body.appendChild(themeButton);
     if(localStorage.getItem("naatilevide-theme")==="dark")document.body.classList.add("dark-mode");
     themeButton.addEventListener("click",()=>{document.body.classList.toggle("dark-mode");localStorage.setItem("naatilevide-theme",document.body.classList.contains("dark-mode")?"dark":"light");});
     function drawLocalLists(){
       const byIds=ids=>ids.map(id=>places.find(p=>p.id===id)).filter(Boolean);
-      document.getElementById("tripChoices").innerHTML=places.map(p=>`<label><input type="checkbox" data-trip="${p.id}" ${tripIds.includes(p.id)?"checked":""}> ${escapeHTML(p.name)}</label>`).join("");
-      document.getElementById("tripSummary").innerHTML=byIds(tripIds).length?byIds(tripIds).map(p=>`• ${escapeHTML(p.name)} (${escapeHTML(p.district)})`).join("<br>"):`No places added yet.`;
       document.getElementById("savedList").innerHTML=byIds([...saved]).map(p=>`<button data-open-local="${p.id}">${escapeHTML(p.name)} · ${escapeHTML(p.district)}</button>`).join("")||"No saved places yet.";
       document.getElementById("recentList").innerHTML=byIds(recentIds).map(p=>`<button data-open-local="${p.id}">${escapeHTML(p.name)} · ${escapeHTML(p.district)}</button>`).join("")||"No recently viewed places yet.";
-      document.getElementById("compareChoices").innerHTML=places.map(p=>`<label><input type="checkbox" data-compare="${p.id}"> ${escapeHTML(p.name)}</label>`).join("");
       document.getElementById("hiddenGrid").innerHTML=places.filter(p=>["Vagamon","Thenmala","Kumarakom","Silent Valley","Edakkal Caves"].includes(p.name)).map(p=>`<article class="place-card"><div class="place-image"><img src="${p.image}" alt="${escapeHTML(p.name)}" loading="lazy"></div><div class="place-info"><div class="place-location">${escapeHTML(p.district)} · Kerala</div><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description)}</p><button class="details-btn" data-hidden-open="${p.id}">View details ↗</button></div></article>`).join("");
     }
     drawLocalLists();
-    document.getElementById("tripChoices").addEventListener("change",e=>{const id=Number(e.target.dataset.trip);if(!id)return;tripIds=e.target.checked?[...new Set([...tripIds,id])]:tripIds.filter(x=>x!==id);localStorage.setItem("naatilevide-trip",JSON.stringify(tripIds));drawLocalLists();});
-    document.getElementById("printTrip").addEventListener("click",()=>{const items=tripIds.map(id=>places.find(p=>p.id===id)).filter(Boolean);if(!items.length){showToast("Add at least one place first");return;}const w=window.open("","_blank");if(!w){showToast("Allow pop-ups to print your guide");return;}w.document.write(`<html><head><title>Naatilevide trip guide</title></head><body><h1>Naatilevide · Kerala trip guide</h1>${items.map(p=>`<h2>${escapeHTML(p.name)}</h2><p>${escapeHTML(p.district)} · ${escapeHTML(p.category)}</p><p>${escapeHTML(p.description)}</p><p>Coordinates: ${p.lat}, ${p.lng}</p>`).join("")}<p>Verify local access, timings and conditions before travel.</p></body></html>`);w.document.close();w.print();});
-    function calcBudget(){const d=+document.getElementById("budgetDistance").value||0,m=+document.getElementById("budgetMileage").value||1,f=+document.getElementById("budgetFuel").value||0,o=+document.getElementById("budgetOther").value||0,n=Math.max(1,+document.getElementById("budgetPeople").value||1);const total=(d/m)*f+o;document.getElementById("budgetResult").innerHTML=`Estimated total: <strong>₹${Math.round(total).toLocaleString("en-IN")}</strong><br>Per person: <strong>₹${Math.round(total/n).toLocaleString("en-IN")}</strong><br><small>Estimate only; excludes costs you have not entered.</small>`;}
-    ["budgetDistance","budgetMileage","budgetFuel","budgetOther","budgetPeople"].forEach(id=>document.getElementById(id).addEventListener("input",calcBudget));calcBudget();
-    document.getElementById("compareChoices").addEventListener("change",e=>{const chosen=[...document.querySelectorAll("[data-compare]:checked")].slice(0,3).map(x=>places.find(p=>p.id===Number(x.dataset.compare))).filter(Boolean);document.querySelectorAll("[data-compare]").forEach(x=>{if(chosen.length>=3&&!x.checked)x.disabled=true;else x.disabled=false;});document.getElementById("compareResult").innerHTML=chosen.length?`<table style="width:100%;text-align:left"><tr><th>Place</th><th>District</th><th>Type</th><th>Coordinates</th></tr>${chosen.map(p=>`<tr><td>${escapeHTML(p.name)}</td><td>${escapeHTML(p.district)}</td><td>${escapeHTML(p.category)}</td><td>${p.lat.toFixed(3)}, ${p.lng.toFixed(3)}</td></tr>`).join("")}</table>`:"Choose places to compare.";});
     document.getElementById("savedPlaces").addEventListener("click",e=>{const b=e.target.closest("[data-open-local]");if(b)openPlace(Number(b.dataset.openLocal));});
     document.getElementById("hiddenGrid").addEventListener("click",e=>{const b=e.target.closest("[data-hidden-open]");if(b)openPlace(Number(b.dataset.hiddenOpen));});
     const NAATILEVIDE_CONTACT_EMAIL="naatilevide.in@gmail.com";
@@ -2225,15 +2229,6 @@
     ['foodDistrict','activityDistrict','eventDistrict','assistantDistrict'].forEach(id=>fillSelect(id,true));
     const mapsSearch=(q)=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
     const webSearch=(q)=>'https://www.google.com/search?q='+encodeURIComponent(q);
-    // Multi-stop route: Google Maps supplies real road routing and ETA.
-    const routeChosen=()=>[...document.querySelectorAll('[data-route]:checked')].map(x=>places.find(p=>p.id===Number(x.dataset.route))).filter(Boolean);
-    document.getElementById('routeChoices').innerHTML=places.map(p=>`<label><input type="checkbox" data-route="${p.id}"> ${escapeHTML(p.name)} · ${escapeHTML(p.district)}</label>`).join('');
-    function updateRoute(){const a=routeChosen();const estimatedKm=a.length>=2?a.slice(1).reduce((sum,p,i)=>sum+distanceKm(a[i].lat,a[i].lng,p.lat,p.lng),0):0;
-      document.getElementById('routeSummary').textContent=a.length?`${a.length} stops selected: ${a.map(p=>p.name).join(' → ')}${a.length>=2?` · Approx. ${estimatedKm.toFixed(1)} km straight-line distance between stops (road distance will differ).`:""}`:'Select at least two destinations to create a route.';
-      const preview=document.getElementById("collectionPreview");if(preview)preview.textContent=a.length?`${a.length} destinations selected: ${a.map(p=>p.name).join(" · ")}`:"Select destinations in the route explorer, then create your collection.";const link=document.getElementById('openRoute');if(a.length>=2){const origin=`${a[0].lat},${a[0].lng}`,dest=`${a[a.length-1].lat},${a[a.length-1].lng}`,wps=a.slice(1,-1).map(p=>`${p.lat},${p.lng}`).join('|');link.href=`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(dest)}&waypoints=${encodeURIComponent(wps)}&travelmode=driving`;link.style.pointerEvents='auto';link.style.opacity='1';}else{link.href='https://www.google.com/maps';link.style.opacity='.55';}}
-    document.getElementById('routeChoices').addEventListener('change',updateRoute);updateRoute();
-
-
     let osmLastRequestAt=0;
     async function searchKeralaOSM(query){
       const status=document.getElementById("osmSearchStatus"),results=document.getElementById("osmSearchResults"),button=document.getElementById("osmSearchButton");
@@ -2271,36 +2266,6 @@
       },err=>{status.textContent=err.code===1?"Location permission was denied. Allow location access in browser settings.":"Could not determine your location. Please try again.";},{enableHighAccuracy:true,timeout:12000,maximumAge:60000});
     });
     document.getElementById("nearbyDiscoveryResults").addEventListener("click",e=>{const b=e.target.closest("[data-nearby-open]");if(b)openPlace(Number(b.dataset.nearbyOpen));});
-
-    // Shareable travel collections: browser-local saved lists plus shareable URL.
-    let latestCollectionUrl="";
-    const collectionsKey="naatilevide-collections";
-    function readCollections(){try{return JSON.parse(localStorage.getItem(collectionsKey)||"[]");}catch{return [];}}
-    function drawCollections(){
-      const box=document.getElementById("savedCollections"),items=readCollections();
-      box.innerHTML=items.length?items.map((c,i)=>`<div class="saved-collection"><span><strong>${escapeHTML(c.name)}</strong><br><small>${c.ids.length} places</small></span><span><button type="button" data-collection-share="${i}">Share</button> <button type="button" data-collection-delete="${i}">Delete</button></span></div>`).join(""):"No collections saved on this device yet.";
-    }
-    function makeCollectionUrl(name,ids){const url=new URL(location.href);url.hash="";url.searchParams.set("collection",name);url.searchParams.set("places",ids.join(","));return url.toString();}
-    async function copyText(text){if(navigator.clipboard?.writeText)return navigator.clipboard.writeText(text);const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();}
-    document.getElementById("createCollection").addEventListener("click",()=>{
-      const selected=routeChosen(),name=document.getElementById("collectionName").value.trim()||"My Kerala Trip",status=document.getElementById("collectionLinkStatus");
-      if(!selected.length){status.textContent="Select destinations in the route explorer first.";return;}
-      const ids=selected.map(p=>p.id),url=makeCollectionUrl(name,ids),items=readCollections();
-      items.unshift({name,ids,url});localStorage.setItem(collectionsKey,JSON.stringify(items.slice(0,30)));
-      latestCollectionUrl=url;document.getElementById("copyCollectionLink").disabled=false;status.textContent="Collection created. Copy the link to share it.";drawCollections();
-    });
-    document.getElementById("copyCollectionLink").addEventListener("click",async()=>{if(!latestCollectionUrl)return;try{await copyText(latestCollectionUrl);document.getElementById("collectionLinkStatus").textContent="Share link copied.";}catch{document.getElementById("collectionLinkStatus").textContent=latestCollectionUrl;}});
-    document.getElementById("savedCollections").addEventListener("click",async e=>{
-      const s=e.target.closest("[data-collection-share]"),d=e.target.closest("[data-collection-delete]"),items=readCollections();
-      if(s){const c=items[Number(s.dataset.collectionShare)];if(!c)return;latestCollectionUrl=makeCollectionUrl(c.name,c.ids);document.getElementById("copyCollectionLink").disabled=false;try{await copyText(latestCollectionUrl);document.getElementById("collectionLinkStatus").textContent="Collection link copied.";}catch{document.getElementById("collectionLinkStatus").textContent=latestCollectionUrl;}}
-      if(d){items.splice(Number(d.dataset.collectionDelete),1);localStorage.setItem(collectionsKey,JSON.stringify(items));drawCollections();}
-    });
-    drawCollections();
-    const sharedParams=new URLSearchParams(location.search),sharedIds=(sharedParams.get("places")||"").split(",").map(Number).filter(Number.isFinite);
-    if(sharedParams.has("collection")&&sharedIds.length){
-      const valid=sharedIds.filter(id=>places.some(p=>p.id===id));
-      if(valid.length){document.querySelectorAll("[data-route]").forEach(input=>input.checked=valid.includes(Number(input.dataset.route)));updateRoute();document.getElementById("collectionName").value=sharedParams.get("collection").slice(0,60);document.getElementById("collectionLinkStatus").textContent=`Shared collection loaded: ${valid.length} matching places.`;}
-    }
 
     // Weather links and seasonal context use selected place's district/name.
     const seasonSelect=document.getElementById('seasonPlace');seasonSelect.innerHTML=places.map(p=>`<option value="${p.id}">${escapeHTML(p.name)} · ${escapeHTML(p.district)}</option>`).join('');
