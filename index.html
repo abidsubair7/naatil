@@ -840,10 +840,10 @@
           <h1>നാട്ടിലെവിടെ?<br><em>Find your</em><br>next place.</h1>
           <p class="hero-copy">From misty hilltops to quiet beaches, discover beautiful places across Kerala. Search a destination, explore its story and plan where to go next.</p>
           <form class="search-panel" id="searchForm">
-            <span class="search-icon">⌕</span>
+            <span class="search-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width ="23" height="23"><!--!Font Awesome Pro v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2026 Fonticons, Inc.--><path fill="rgb(0, 0, 0)" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM288 176c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 48.8 46.5 111.6 68.6 138.6 6 7.3 16.8 7.3 22.7 0 22.1-27 68.6-89.8 68.6-138.6zm-112 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg></span>
             <input id="searchInput" type="search" placeholder="Search places, districts or experiences…" aria-label="Search destinations">
             <button type="button" class="nearby-btn" id="nearbyBtn" aria-label="Find places near my current location" title="Find places near me">
-              <span aria-hidden="true">⌖</span><span class="nearby-label">Near me</span>
+              <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="18" height="18"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path fill="rgb(43, 90, 65)" d="M288-16c17.7 0 32 14.3 32 32l0 18.3c98.1 14 175.7 91.6 189.7 189.7l18.3 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-18.3 0c-14 98.1-91.6 175.7-189.7 189.7l0 18.3c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-18.3C157.9 463.7 80.3 386.1 66.3 288L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l18.3 0C80.3 125.9 157.9 48.3 256 34.3L256 16c0-17.7 14.3-32 32-32zM128 256a160 160 0 1 0 320 0 160 160 0 1 0 -320 0zm160-96a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg></span><span class="nearby-label">Near me</span>
             </button>
             <button class="btn" type="submit">Explore places ↗</button>
           </form>
@@ -879,7 +879,7 @@
           <div class="section-kicker">02 / Explore on the map</div>
           <h2>See Kerala<br>from here.</h2>
           <p>Get a geographical view of selected destinations. Select a marker to see the place name and open its details.</p>
-          <div class="map-points"><div class="map-point"><span>⌖</span> Discover destinations by location</div><div class="map-point"><span>↗</span> Open directions in Google Maps</div><div class="map-point"><span>♡</span> Save places you want to visit</div></div>
+          <div class="map-points"><div class="map-point"><span></span> Discover destinations by location</div><div class="map-point"><span>↗</span> Open directions in Google Maps</div><div class="map-point"><span>♡</span> Save places you want to visit</div></div>
           <a class="btn" href="#districts">Explore districts ↗</a>
         </div>
         <div><div id="keralaMap" role="application" aria-label="Map of Kerala destinations"></div><div class="map-note">Map data © OpenStreetMap contributors · Map tiles subject to OpenStreetMap usage policy.</div></div>
@@ -2303,7 +2303,7 @@
       const hideSplash = () => {
         const splash = document.getElementById("sitePreloader");
         if (!splash) return;
-        const remaining = Math.max(0, 5000 - (Date.now() - startedAt));
+        const remaining = Math.max(0, 4000 - (Date.now() - startedAt));
         setTimeout(() => {
           splash.classList.add("is-hidden");
           setTimeout(() => splash.remove(), 650);
